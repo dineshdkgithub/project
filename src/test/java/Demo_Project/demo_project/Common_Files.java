@@ -54,7 +54,7 @@ public class Common_Files {
         Actions actions = new Actions(driver);
         
         // Perform "Actions down" (simulates pressing the down arrow key)
-        actions.sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ENTER).build().perform();
+        actions.sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ENTER).build().perform(); 
 
     }
 
