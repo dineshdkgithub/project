@@ -15,7 +15,7 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 
 public class Sales_Force extends Common_Files{
-	@Test(dataProvider = excel,testName = "Test Data",priority=1)
+	@Test(dataProvider = excel,testName = "Login",priority=1)
 	public void Login(Map mapdata) throws InterruptedException{
 		chromedriver();
 		//Login
@@ -31,6 +31,11 @@ public class Sales_Force extends Common_Files{
 	@Test(dataProvider = excel,testName = "Test Data",priority=2)
 	public void Add_New_Contact(Map mapdata) throws InterruptedException, IOException{
 		String testcase =(String)mapdata.get("Test Case");
+		String salutation =(String)mapdata.get("Salutation");
+		String first =(String)mapdata.get("First Name");
+		String last =(String)mapdata.get("Last Name");
+		String account = (String)mapdata.get("Account");
+		String title= (String)mapdata.get("Title");
 		 test = extent.createTest("Add_New_Contact","This is Add Contacts : "+testcase);
 		try {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -39,55 +44,64 @@ public class Sales_Force extends Common_Files{
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         //Salutations
         driver.findElement(By.xpath("//button[@data-value='--None--']")).click();
-        driver.findElement(By.xpath("//lightning-base-combobox-item[@data-value='Mr.']")).click();
+        driver.findElement(By.xpath("//lightning-base-combobox-item[@data-value='"+salutation+"']")).click();
         //First name
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='firstName']"))).sendKeys("Dinesh");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='firstName']"))).sendKeys(first);
         //Last Name
-        driver.findElement(By.xpath("//input[@name='lastName']")).sendKeys("S");
+        driver.findElement(By.xpath("//input[@name='lastName']")).sendKeys(last);
         //Account
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Search Accounts...']"))).sendKeys("Sales");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Search Accounts...']"))).sendKeys(account);
         Thread.sleep(2000);
         //Down Arrow and Enter
         downenter();
         //Title
-        driver.findElement(By.xpath("//input[@name='Title']")).sendKeys("Sales Force");
+        driver.findElement(By.xpath("//input[@name='Title']")).sendKeys(title);
         //Report to
         //driver.findElement(By.xpath("//input[@placeholder='Search Contacts...']")).click();
         Thread.sleep(1000);
         //downenter();
         //Description
-        driver.findElement(By.xpath("//label[text()='Description']/following-sibling::div//textarea[@class='slds-textarea']")).sendKeys("Good");
+        driver.findElement(By.xpath("//label[text()='Description']/following-sibling::div//textarea[@class='slds-textarea']")).sendKeys((String)mapdata.get("Description"));
         //Phone
-        driver.findElement(By.xpath("//input[@name='Phone']")).sendKeys("6379978010");
+        driver.findElement(By.xpath("//input[@name='Phone']")).sendKeys((String)mapdata.get("Phone"));
         //Email
-        driver.findElement(By.xpath("//input[@name='Email']")).sendKeys("dinesh@gmail.com");
+        driver.findElement(By.xpath("//input[@name='Email']")).sendKeys((String)mapdata.get("Email"));
         //Mailing street
-        driver.findElement(By.xpath("//textarea[@name='street']")).sendKeys("North street, Tambaram");
+        driver.findElement(By.xpath("//textarea[@name='street']")).sendKeys((String)mapdata.get("Mailing street"));
         //Mailing city
-        driver.findElement(By.xpath("//input[@name='city']")).sendKeys("Chennai");
+        driver.findElement(By.xpath("//input[@name='city']")).sendKeys((String)mapdata.get("Mailing City"));
         //Postalcode
-        driver.findElement(By.xpath("//input[@name='postalCode']")).sendKeys("600064");
+        driver.findElement(By.xpath("//input[@name='postalCode']")).sendKeys((String)mapdata.get("Postal code"));
         //Province
-        driver.findElement(By.xpath("//input[@name='province']")).sendKeys("Tamil Nadu");
+        driver.findElement(By.xpath("//input[@name='province']")).sendKeys((String)mapdata.get("State"));
         //Country
-        driver.findElement(By.xpath("//input[@name='country']")).sendKeys("India");
-        List<WebElement> warn =wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//*[@class='slds-icon slds-icon-text-warning slds-icon_small']")));
-        if(!warn.isEmpty()) {
+        driver.findElement(By.xpath("//input[@name='country']")).sendKeys((String)mapdata.get("Country"));
+       // List<WebElement> warn =wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//header[@class='pageErrorHeader slds-popover__header']")));
+        try{
         	String text =driver.findElement(By.xpath("//header[@class='pageErrorHeader slds-popover__header']")).getText();
         	System.out.println(text);
         	//close
         	driver.findElement(By.xpath("//button[@name='CancelEdit']")).click();
         	screenshotpath();
 			test.log(Status.FAIL, MarkupHelper.createCodeBlock("Message : "+text.toString()));
-        }else {
+        }catch(Exception e) {
         // save
         driver.findElement(By.xpath("//button[@name='SaveEdit']")).click();
         Thread.sleep(2000);
+        List<WebElement> text =wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//header[@class='pageErrorHeader slds-popover__header']")));
+        if(!text.isEmpty()) {
+         String warn=text.get(0).getText();
+       //close
+     	driver.findElement(By.xpath("//button[@name='CancelEdit']")).click();
+     	screenshotpath();
+			test.log(Status.FAIL, MarkupHelper.createCodeBlock("Message : "+warn.toString()));
+        }else {
         //Toast Message
         String actual_result= wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='toastMessage slds-text-heading--small forceActionsText']"))).getText();
         //System.out.println(actual_result);
         screenshotbase64();
 		 test.log(Status.PASS, MarkupHelper.createCodeBlock("Message : "+actual_result+"\n".toString()));
+        }
 		}
 	}catch(Exception e){
 		screenshotpath();
