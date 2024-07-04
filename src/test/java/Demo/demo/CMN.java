@@ -27,6 +27,7 @@ import org.testng.annotations.Test;
 
 
 public class CMN {
+	//token : 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
 	public static  WebDriver driver;
 	protected static final String excel = "HRM";
 	@DataProvider(name = excel)
