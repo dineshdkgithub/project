@@ -5,6 +5,7 @@
     <classes>
       <class name="Demo.demo.demo_project">
         <methods>
+          <include name="Login"/>
           <include name="close"/>
           <include name="search_flight" invocation-numbers="0"/>
         </methods>
