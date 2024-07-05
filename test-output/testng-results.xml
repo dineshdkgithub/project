@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2024-07-05T09:01:23Z" name="Default suite" finished-at="2024-07-05T09:03:07Z" duration-ms="103496">
+    <groups>
+    </groups>
+    <test started-at="2024-07-05T09:01:23Z" name="Default test" finished-at="2024-07-05T09:03:07Z" duration-ms="103496">
+      <class name="Booking.com.Flight">
+        <test-method is-config="true" signature="startReport()[pri:0, instance:Booking.com.Flight@37cd92d6]" started-at="2024-07-05T14:31:22Z" name="startReport" finished-at="2024-07-05T14:31:23Z" duration-ms="583" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- startReport -->
+        <test-method signature="Login()[pri:1, instance:Booking.com.Flight@37cd92d6]" started-at="2024-07-05T14:31:23Z" name="Login" finished-at="2024-07-05T14:31:32Z" duration-ms="8560" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- Login -->
+        <test-method signature="Search_flight(java.util.Map)[pri:2, instance:Booking.com.Flight@37cd92d6]" started-at="2024-07-05T14:31:56Z" name="Search_flight" data-provider="HRM" finished-at="2024-07-05T14:33:07Z" duration-ms="70957" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[{To Location=India, Location Code=DEL, To Location Code=BOM, Return date=2024-08-11, Age Of Child_6=13, Age Of Child_5=12, Age Of Child_4=11, Age Of Child_3=10, Age Of Child_7=14, No Of Child=3, No Of Adult=1, Depart date=2024-07-09, Age Of Child_2=9, Age Of Child_1=7, From Location=India, Age Of Child_0=5}]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- Search_flight -->
+        <test-method is-config="true" signature="Stoptest()[pri:0, instance:Booking.com.Flight@37cd92d6]" started-at="2024-07-05T14:33:07Z" name="Stoptest" finished-at="2024-07-05T14:33:08Z" duration-ms="891" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- Stoptest -->
+      </class> <!-- Booking.com.Flight -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
