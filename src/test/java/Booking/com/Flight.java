@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
@@ -24,9 +25,9 @@ public class Flight extends CMN {
 		driver.get("https://www.booking.com/flights");
 	}
 	@Test(dataProvider = excel,testName = "Search",priority=2)
-	public void Search_flight(Map mapdata) throws InterruptedException, IOException {
+	public void Round_trip(Map mapdata) throws InterruptedException, IOException {
 		String testcase =(String)mapdata.get("Test Case");
-		test = extent.createTest("Search_flight","This is Search flight Positive : "+testcase);
+		test = extent.createTest("Round_trip","This is Round_trip Positive : "+testcase);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		try {
 		String from="//button[@data-ui-name='input_location_from_segment_0']";
@@ -45,57 +46,42 @@ public class Flight extends CMN {
 		//Select Date
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-ui-name='button_date_segment_0']"))).click();
 		String depart =(String)mapdata.get("Depart date");
-		//date saprate
-		LocalDate date = LocalDate.parse(depart, DateTimeFormatter.ISO_LOCAL_DATE);
-		int year = date.getYear();
-        String month = date.getMonth().name();  // Gets the month name in uppercase
-        int day = date.getDayOfMonth();
-        //Month
-        String monthTitleCase = month.substring(0, 1).toUpperCase() + month.substring(1).toLowerCase();
-        String verify=monthTitleCase+" "+year;
-        System.out.println(year+monthTitleCase+day);
-        while(true) {
-        	String Month=driver.findElement(By.xpath("//div[contains(@class, 'Calendar-module__monthWrapper___snCld')]//h3[contains(@class, 'Text-module__root--variant-strong_1___0mtJ-') and contains(@class, 'Calendar-module__month___zJF7A')]")).getText();
-        	if(verify.equals(Month)) {
-        		break;	
-        	}else {
-        		
-        	}
-        }
-        	
-        //Select Depart date
-		driver.findElement(By.xpath("//span[@data-date='"+depart+"']")).click();//2024-08-03
-		//Select Return date
-		driver.findElement(By.xpath("//span[@data-date='"+(String)mapdata.get("Return date")+"']")).click();
+		String returns =(String)mapdata.get("Return date");
+        String larrow ="//button[@class='Actionable-module__root___VRKD+ Button-module__root___Q6nj1 Button-module__root--variant-tertiary___jSdz0 Button-module__root--icon-only___ojeRa Button-module__root--size-large___kP7cl Button-module__root--variant-tertiary-neutral___G8p0m Calendar-module__control___I7JT6 Calendar-module__control--prev___Mi8Du']";
+        String rarrow ="//button[@class='Actionable-module__root___VRKD+ Button-module__root___Q6nj1 Button-module__root--variant-tertiary___jSdz0 Button-module__root--icon-only___ojeRa Button-module__root--size-large___kP7cl Button-module__root--variant-tertiary-neutral___G8p0m Calendar-module__control___I7JT6 Calendar-module__control--next___jXzpD']";
+        // Select Depart date
+        selectDate(driver, depart, larrow, rarrow);
+
+        // Select Return date
+        selectDate(driver, returns, larrow, rarrow);
+        
 		//Select adult
 		driver.findElement(By.xpath("//button[@data-ui-name='button_occupancy']")).click();
-		String Adult=(String)mapdata.get("No Of Adult");
+		String no_of_adult=(String)mapdata.get("No Of Adult");
 		while(true) {
 			//Select Adult
 			String adult=driver.findElement(By.xpath("//div[@data-ui-name='occupancy_adults']//span[@class='InputStepper-module__value___Hr63o']")).getText();
-			if (adult.equals(Adult)) {
+			if (adult.equals(no_of_adult)) {
 		        break;
 		    } else {
 		        // Click the next month button
 		        driver.findElement(By.xpath("//button[@data-ui-name='button_occupancy_adults_plus']")).click();
 		    }
 		}
-		String Child=(String)mapdata.get("No Of Child");
+		String no_of_child=(String)mapdata.get("No Of Child");
 		while(true) {
 			//Select Child
 			String child=driver.findElement(By.xpath("//div[@data-ui-name='occupancy_children']//span[@class='InputStepper-module__value___Hr63o']")).getText();
-			if (child.equals(Child)) {
+			if (child.equals(no_of_child)) {
 		        break;
-		    }else if (Integer.parseInt(Child) < Integer.parseInt(child)){
-		    	
-		    	driver.findElement(By.xpath("//button[@data-ui-name='button_occupancy_children_minus']")).click();
-		    	
+		    }else if (Integer.parseInt(no_of_child) < Integer.parseInt(child)){
+		    	driver.findElement(By.xpath("//button[@data-ui-name='button_occupancy_children_minus']")).click();	
 		    }else {
-		    }
 		        // Click the next month button
 		        driver.findElement(By.xpath("//button[@data-ui-name='button_occupancy_children_plus']")).click();
+		        }
 		    }
-		for(int i=0;i< Integer.parseInt(Child);i++) {
+		for(int i=0;i< Integer.parseInt(no_of_child);i++) {
 			driver.findElement(By.xpath("//select[@name='sr_occupancy_children_age_"+i+"']")).click();
 			driver.findElement(By.xpath("//select[@name='sr_occupancy_children_age_"+i+"']/option[@value='"+(String)mapdata.get("Age Of Child_"+i+"")+"']")).click();
 		}

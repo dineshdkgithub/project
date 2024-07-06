@@ -6,17 +6,22 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -186,5 +191,27 @@ import io.qameta.allure.Allure;
 	        ByteArrayInputStream screenshotStream = new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES));
 	        Allure.addAttachment(actualresult, screenshotStream);
 	    }
+	    public static void selectDate(WebDriver driver, String dateToSelect, String larrow, String rarrow) {
+	        List<WebElement> leftarrow = driver.findElements(By.xpath(larrow));
+	        List<WebElement> rightarrow = driver.findElements(By.xpath(rarrow));
+	        boolean leftArrowClicked = false;
+
+	        while (true) {
+	            List<WebElement> Month = driver.findElements(By.xpath("//span[@data-date='" + dateToSelect + "']"));
+	            if (!Month.isEmpty()) {
+	                Month.get(0).click();
+	                break;
+	            } else if (!leftArrowClicked && !leftarrow.isEmpty()) {
+	                leftarrow.get(0).click();
+	                leftArrowClicked = true;
+	            } else if (!rightarrow.isEmpty()) {
+	                rightarrow.get(0).click();
+	            } else {
+	                System.out.println("Error while Selecting Date !!");
+	                break;
+	            }
+	        }
+	    }
+
 
 	}
