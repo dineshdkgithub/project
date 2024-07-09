@@ -31,6 +31,7 @@ public class Flight extends CMN {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		try {
 		String from="//button[@data-ui-name='input_location_from_segment_0']";
+		String to ="//button[@data-ui-name='input_location_to_segment_0']";
 		//From location
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(from))).click();
 		WebElement fromfield =wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Airport or city']")));
@@ -39,7 +40,8 @@ public class Flight extends CMN {
 		//Select Airport
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[@class='List-module__location___Yigjj']//b[contains(text(),'"+(String)mapdata.get("Location Code")+"')]"))).click();
 		//To Location
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='ShellButton-module__inner___dHha+']//span[contains(text(), 'Where to?')]"))).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(to))).click();
+		driver.findElement(By.xpath("//input[@placeholder='Airport or city']")).sendKeys(Keys.BACK_SPACE);
 		driver.findElement(By.xpath("//input[@placeholder='Airport or city']")).sendKeys((String)mapdata.get("To Location"));
 		//Select To Location
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[@class='List-module__location___Yigjj']//b[contains(text(),'"+(String)mapdata.get("To Location Code")+"')]"))).click();

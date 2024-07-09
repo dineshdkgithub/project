@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="3" passed="3" failed="0" skipped="0">
+<testng-results ignored="0" total="4" passed="4" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-07-06T09:13:20Z" name="Default suite" finished-at="2024-07-06T09:14:05Z" duration-ms="44161">
+  <suite started-at="2024-07-09T08:48:22Z" name="Default suite" finished-at="2024-07-09T08:49:25Z" duration-ms="63535">
     <groups>
     </groups>
-    <test started-at="2024-07-06T09:13:20Z" name="Default test" finished-at="2024-07-06T09:14:05Z" duration-ms="44161">
+    <test started-at="2024-07-09T08:48:22Z" name="Default test" finished-at="2024-07-09T08:49:25Z" duration-ms="63535">
       <class name="Booking.com.Flight">
-        <test-method is-config="true" signature="startReport()[pri:0, instance:Booking.com.Flight@46ab18da]" started-at="2024-07-06T14:43:20Z" name="startReport" finished-at="2024-07-06T14:43:20Z" duration-ms="471" status="PASS">
+        <test-method is-config="true" signature="startReport()[pri:0, instance:Booking.com.Flight@37cd92d6]" started-at="2024-07-09T14:18:21Z" name="startReport" finished-at="2024-07-09T14:18:21Z" duration-ms="466" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- startReport -->
-        <test-method signature="Login()[pri:1, instance:Booking.com.Flight@46ab18da]" started-at="2024-07-06T14:43:20Z" name="Login" finished-at="2024-07-06T14:43:29Z" duration-ms="8440" status="PASS">
+        <test-method signature="Login()[pri:1, instance:Booking.com.Flight@37cd92d6]" started-at="2024-07-09T14:18:22Z" name="Login" finished-at="2024-07-09T14:18:30Z" duration-ms="8185" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Login -->
-        <test-method signature="Round_trip(java.util.Map)[pri:2, instance:Booking.com.Flight@46ab18da]" started-at="2024-07-06T14:43:30Z" name="Round_trip" data-provider="HRM" finished-at="2024-07-06T14:43:54Z" duration-ms="23791" status="PASS">
+        <test-method signature="Round_trip(java.util.Map)[pri:2, instance:Booking.com.Flight@37cd92d6]" started-at="2024-07-09T14:18:30Z" name="Round_trip" data-provider="HRM" finished-at="2024-07-09T14:18:51Z" duration-ms="21017" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -26,18 +26,29 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Round_trip -->
-        <test-method signature="Round_trip(java.util.Map)[pri:2, instance:Booking.com.Flight@46ab18da]" started-at="2024-07-06T14:43:54Z" name="Round_trip" data-provider="HRM" finished-at="2024-07-06T14:44:05Z" duration-ms="10940" status="PASS">
+        <test-method signature="Round_trip(java.util.Map)[pri:2, instance:Booking.com.Flight@37cd92d6]" started-at="2024-07-09T14:18:51Z" name="Round_trip" data-provider="HRM" finished-at="2024-07-09T14:19:08Z" duration-ms="16472" status="PASS">
           <params>
             <param index="0">
               <value>
-                <![CDATA[{To Location=, Location Code=, To Location Code=, Return date=, Age Of Child_6=, Age Of Child_5=, Test Case=Invalid, Age Of Child_4=, Age Of Child_3=, Age Of Child_7=, No Of Child=, No Of Adult=, Depart date=, Age Of Child_2=, Age Of Child_1=, From Location=, Age Of Child_0=}]]>
+                <![CDATA[{To Location=Singapore, Location Code=MAA, To Location Code=XSP, Return date=2024-09-12, Age Of Child_6=13, Age Of Child_5=12, Test Case=valid_1, Age Of Child_4=11, Age Of Child_3=10, Age Of Child_7=14, No Of Child=1, No Of Adult=2, Depart date=2024-07-12, Age Of Child_2=9, Age Of Child_1=7, From Location=India, Age Of Child_0=5}]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Round_trip -->
-        <test-method is-config="true" signature="Stoptest()[pri:0, instance:Booking.com.Flight@46ab18da]" started-at="2024-07-06T14:44:05Z" name="Stoptest" finished-at="2024-07-06T14:44:06Z" duration-ms="978" status="PASS">
+        <test-method signature="Round_trip(java.util.Map)[pri:2, instance:Booking.com.Flight@37cd92d6]" started-at="2024-07-09T14:19:08Z" name="Round_trip" data-provider="HRM" finished-at="2024-07-09T14:19:25Z" duration-ms="17134" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[{To Location=Chennai, Location Code=USA, To Location Code=MAA, Return date=2024-09-12, Age Of Child_6=13, Age Of Child_5=12, Test Case=Valid_2, Age Of Child_4=11, Age Of Child_3=10, Age Of Child_7=14, No Of Child=2, No Of Adult=5, Depart date=2024-07-12, Age Of Child_2=9, Age Of Child_1=7, From Location=USA, Age Of Child_0=5}]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- Round_trip -->
+        <test-method is-config="true" signature="Stoptest()[pri:0, instance:Booking.com.Flight@37cd92d6]" started-at="2024-07-09T14:19:25Z" name="Stoptest" finished-at="2024-07-09T14:19:26Z" duration-ms="405" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Stoptest -->
