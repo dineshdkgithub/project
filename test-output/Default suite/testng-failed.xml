@@ -7,7 +7,7 @@
         <methods>
           <include name="startReport"/>
           <include name="Stoptest"/>
-          <include name="Round_trip" invocation-numbers="0 1"/>
+          <include name="Round_trip" invocation-numbers="3"/>
         </methods>
       </class> <!-- Booking.com.Flight -->
     </classes>

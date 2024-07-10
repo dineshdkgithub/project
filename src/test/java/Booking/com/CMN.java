@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,6 +26,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
@@ -191,13 +194,21 @@ import io.qameta.allure.Allure;
 	        ByteArrayInputStream screenshotStream = new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES));
 	        Allure.addAttachment(actualresult, screenshotStream);
 	    }
-	    public static void selectDate(WebDriver driver, String dateToSelect, String larrow, String rarrow) {
+	    //Select Data
+	    public static void selectDate(WebDriver driver, String dateToSelect, String larrow, String rarrow) throws ParseException {
 	        List<WebElement> leftarrow = driver.findElements(By.xpath(larrow));
 	        List<WebElement> rightarrow = driver.findElements(By.xpath(rarrow));
+	        //Change Date format
+	        SimpleDateFormat oldFormat = new SimpleDateFormat("M/dd/yy");
+	        SimpleDateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        //
+	            Date oldDate = oldFormat.parse(dateToSelect);
+	            String newDateString = newFormat.format(oldDate);
+	            System.out.println(newDateString);
 	        boolean leftArrowClicked = false;
 
 	        while (true) {
-	            List<WebElement> Month = driver.findElements(By.xpath("//span[@data-date='" + dateToSelect + "']"));
+	            List<WebElement> Month = driver.findElements(By.xpath("//span[@data-date='" + newDateString + "']"));
 	            if (!Month.isEmpty()) {
 	                Month.get(0).click();
 	                break;
@@ -208,10 +219,31 @@ import io.qameta.allure.Allure;
 	                rightarrow.get(0).click();
 	            } else {
 	                System.out.println("Error while Selecting Date !!");
+	                driver.findElement(By.xpath("//h1[@class='Text-module__root--variant-headline_1___Zs-em']")).click();
 	                break;
 	            }
 	        }
 	    }
+	    //Select Location
+	    public static void clickLocationCode(WebDriver driver, WebDriverWait wait, String locationCode, String locationType) {
+	        String locationXpath;
+	        if ("From".equals(locationType)) {
+	            locationXpath = "//li[@class='List-module__location___Yigjj']//b[contains(text(),'" + locationCode + "')]";
+	        } else if ("To".equals(locationType)) {
+	            locationXpath = "//li[@class='List-module__location___Yigjj']//b[contains(text(),'" + locationCode + "')]";
+	        } else {
+	            throw new IllegalArgumentException("Invalid location type: " + locationType);
+	        }
 
+	        // Find elements matching the XPath
+	        boolean isElementVisible = driver.findElements(By.xpath(locationXpath)).size() > 0;
+
+	        if (isElementVisible) {
+	            WebElement locationElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locationXpath)));
+	            locationElement.click();
+	        } else {
+	            driver.findElement(By.xpath("//div[text()='Round trip']")).click();
+	        }
+	    }
 
 	}
