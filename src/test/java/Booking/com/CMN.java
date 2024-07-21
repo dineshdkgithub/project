@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -36,19 +38,21 @@ import org.testng.annotations.Test;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.reporter.configuration.Theme;
 
 import io.qameta.allure.Allure;
 
 
-	public class CMN {
+public class CMN {
 		//token : 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
-		public static  WebDriver driver;
-		protected static final String excel = "HRM";
+		public static Properties properties =null;
+		public static WebDriver driver=null;
+		protected static final String excel = "Search";
 		@DataProvider(name = excel)
 	    public static  Object[][]getdata(Method m)  throws IOException {
 	    	//System.out.println(" method name : " + m.getName());
 	    	String testcaseSheetName = ((Test) m.getAnnotation(Test.class)).testName();
-	        String filePath = "D:\\Data\\Testdata.xlsx";
+	        String filePath = "C:\\Data\\Testdata.xlsx";
 	        FileInputStream fis = new FileInputStream(new File(filePath));
 	        XSSFWorkbook workbook = new XSSFWorkbook(fis);
 	        int totalSheets = workbook.getNumberOfSheets();
@@ -89,29 +93,31 @@ import io.qameta.allure.Allure;
 		        }
 	return data;
 	        }
-		//ChromeDriver
-		public static void chromedriver() {
-	        driver = new ChromeDriver();
-			//Window Maximize
-			driver.manage().window().maximize();
-	    }
-		//EdgeDriver
-		public static void edgedriver() {
-		    // Initialize EdgeDriver
-		     driver = new EdgeDriver();
-		    
-		    // Maximize the browser window
-		    driver.manage().window().maximize();
-		}
-		//FireFoxDriver
-		public  void firefoxdriver() {
-		    // Initialize FirefoxDriver
-		     driver = new FirefoxDriver();
-		    
-		    // Maximize the browser window
-		    driver.manage().window().maximize();
-		}
 
+		//Read property file
+		public Properties loadPropertyFile() throws IOException {
+			//To Load property file
+			FileInputStream fileinputstream = new FileInputStream("config.properties");
+			properties = new Properties();
+			properties.load(fileinputstream);
+			
+			return properties;
+		}
+		@BeforeSuite
+		public void lunchBrowser() throws IOException {
+			loadPropertyFile();
+			String Browser =properties.getProperty("browser");
+			String url =properties.getProperty("url");
+			if(Browser.equalsIgnoreCase("chrome")) {
+				driver = new ChromeDriver();
+			}else if(Browser.equalsIgnoreCase("firefox")) {
+				driver = new FirefoxDriver();
+			}
+			driver.manage().window().maximize();
+			driver.get(url);
+			driver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
+			
+		}
 	    public WebDriver getDriver() {
 	       
 	        return driver;
@@ -131,7 +137,7 @@ import io.qameta.allure.Allure;
 	        // Construct the report file name based on current time and class name
 	        String reportFileName = className + "_" + timeStamp + ".html";
 
-	        String reportDirectoryPath = "D:/Reports";
+	        String reportDirectoryPath = "C:/Reports";
 	        File reportDirectory = new File(reportDirectoryPath);
 	        if (!reportDirectory.exists()) {
 	            reportDirectory.mkdirs(); // Create the directory if it does not exist
@@ -142,14 +148,21 @@ import io.qameta.allure.Allure;
 
 	        // Create an ExtentSparkReporter with the dynamic file name
 	        ExtentSparkReporter reporter = new ExtentSparkReporter(reportFilePath);
+	        reporter.config().setDocumentTitle("Automation Test Report");
+	        reporter.config().setReportName("Flight Booking Platform Test Report");
+	        reporter.config().setTheme(Theme.STANDARD);
 	        
 	        // Actual report
 	        extent = new ExtentReports();
 	        // To call reporter
 	        extent.attachReporter(reporter);
+	        // Set system info
+	        extent.setSystemInfo("Host Name", "Localhost");
+	        extent.setSystemInfo("Environment", "QA");
+	        extent.setSystemInfo("User Name", "Test User");
 	    }
 		@AfterSuite
-		public void Stoptest() {
+		public void tearDown() {
 			//ExtentReports extent ;
 			extent.flush();
 			driver.close();
@@ -162,7 +175,7 @@ import io.qameta.allure.Allure;
 		
 		public static String captureScreenshotPath() throws IOException {
 	        String fileSeparator = System.getProperty("file.separator");
-	        String extentReportPath = "D:" + fileSeparator + "Reports";
+	        String extentReportPath = "C:" + fileSeparator + "Reports";
 	        String screenshotPath = extentReportPath + fileSeparator + "screenshots";
 
 	        File directory = new File(screenshotPath);
@@ -199,7 +212,7 @@ import io.qameta.allure.Allure;
 	        List<WebElement> leftarrow = driver.findElements(By.xpath(larrow));
 	        List<WebElement> rightarrow = driver.findElements(By.xpath(rarrow));
 	        //Change Date format
-	        SimpleDateFormat oldFormat = new SimpleDateFormat("M/dd/yy");
+	        SimpleDateFormat oldFormat = new SimpleDateFormat("yyyy-MM-dd");
 	        SimpleDateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
 	        //
 	            Date oldDate = oldFormat.parse(dateToSelect);

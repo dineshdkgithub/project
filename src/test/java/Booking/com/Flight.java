@@ -18,13 +18,8 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 
 public class Flight extends CMN {
-	@Test(priority=1)
-	public void Login() throws InterruptedException{
-		//Open Driver
-		chromedriver();
-		driver.get("https://www.booking.com/flights");
-	}
-	@Test(dataProvider = excel,testName = "Search",priority=2)
+	
+	@Test(dataProvider = excel,testName = "Search",priority=1)
 	public void Round_trip(Map mapdata) throws InterruptedException, IOException {
 		String testcase =(String)mapdata.get("Test Case");
 		test = extent.createTest("Round_trip","This is Round_trip Positive : "+testcase);
@@ -106,7 +101,7 @@ public class Flight extends CMN {
 		}
 		//Submit
 		driver.findElement(By.xpath("//button[@data-ui-name='button_search_submit']")).click();
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		// Find elements matching the XPath
         boolean isElementVisible = driver.findElements(By.xpath("//div[@class='Frame-module__margin_4___3zoZe']")).size() > 0;
         List<WebElement> error = driver.findElements(By.xpath("//div[@class='ErrorMessage-module__wrapper___HuZk3 ErrorMessage-module__wrapperBottom___HmOJb']"));

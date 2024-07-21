@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
-  <test name="Default test(failed)">
+  <test thread-count="5" name="Default test(failed)">
     <classes>
       <class name="Booking.com.Flight">
         <methods>
-          <include name="startReport"/>
           <include name="Stoptest"/>
-          <include name="Round_trip" invocation-numbers="3"/>
+          <include name="startReport"/>
+          <include name="Round_trip" invocation-numbers="1 2 3"/>
         </methods>
       </class> <!-- Booking.com.Flight -->
     </classes>
