@@ -2,14 +2,13 @@ package Booking.com;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
@@ -17,46 +16,55 @@ import org.testng.annotations.Test;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 
+import Pageobject.*;
 public class Flight extends CMN {
+	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	
-	@Test(dataProvider = excel,testName = "Search",priority=1)
-	public void Round_trip(Map mapdata) throws InterruptedException, IOException {
-		String testcase =(String)mapdata.get("Test Case");
-		test = extent.createTest("Round_trip","This is Round_trip Positive : "+testcase);
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		try {
-		String from="//button[@data-ui-name='input_location_from_segment_0']";
-		String to ="//button[@data-ui-name='input_location_to_segment_0']";
+	
+	public void from_location(Map mapdata) throws InterruptedException {
 		//From location
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(from))).click();
-		WebElement fromfield =wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Airport or city']")));
+		wait.until(ExpectedConditions.visibilityOf(Search.from)).click();
+		WebElement fromfield =wait.until(ExpectedConditions.visibilityOf(Search.fromfield));
 		fromfield.sendKeys(Keys.BACK_SPACE);
 		fromfield.sendKeys((String)mapdata.get("From Location"));
 		//Select Airport
 		String fromLocationCode = (String) mapdata.get("From Location Code");
 		Thread.sleep(2000);
 		clickLocationCode(driver, wait, fromLocationCode, "From");
+	}
+	
+	public void to_location(Map mapdata) throws InterruptedException {
 		//To Location
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(to))).click();
-		driver.findElement(By.xpath("//input[@placeholder='Airport or city']")).sendKeys(Keys.BACK_SPACE);
-		driver.findElement(By.xpath("//input[@placeholder='Airport or city']")).sendKeys((String)mapdata.get("To Location"));
+		wait.until(ExpectedConditions.visibilityOf(Search.to)).click();
+		Search.fromfield.sendKeys(Keys.BACK_SPACE);
+		Search.fromfield.sendKeys((String)mapdata.get("To Location"));
 		//Select To Location
 		String toLocationCode = (String) mapdata.get("To Location Code");
 		Thread.sleep(2000);
         clickLocationCode(driver, wait, toLocationCode, "To");
+		
+	}
 	
+	@Test(dataProvider = excel,testName = "Search",priority=1)
+	public void Round_trip(Map mapdata) throws InterruptedException, IOException {
+		PageFactory.initElements(driver, Search.class);
+		String testcase =(String)mapdata.get("Test Case");
+		test = extent.createTest("Round_trip","This is Round_trip Positive : "+testcase);
+		
+		try {
+		from_location(mapdata);
+		to_location(mapdata);
 		//Select Date
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-ui-name='button_date_segment_0']"))).click();
+		wait.until(ExpectedConditions.visibilityOf(Search.select_date)).click();
 		String depart =(String)mapdata.get("Depart date");
-		System.out.println(depart);
 		String returns =(String)mapdata.get("Return date");
-        String larrow ="//button[@class='Actionable-module__root___VRKD+ Button-module__root___Q6nj1 Button-module__root--variant-tertiary___jSdz0 Button-module__root--icon-only___ojeRa Button-module__root--size-large___kP7cl Button-module__root--variant-tertiary-neutral___G8p0m Calendar-module__control___I7JT6 Calendar-module__control--prev___Mi8Du']";
-        String rarrow ="//button[@class='Actionable-module__root___VRKD+ Button-module__root___Q6nj1 Button-module__root--variant-tertiary___jSdz0 Button-module__root--icon-only___ojeRa Button-module__root--size-large___kP7cl Button-module__root--variant-tertiary-neutral___G8p0m Calendar-module__control___I7JT6 Calendar-module__control--next___jXzpD']";
+        String left_arrow ="//button[@class='Actionable-module__root___VRKD+ Button-module__root___Q6nj1 Button-module__root--variant-tertiary___jSdz0 Button-module__root--icon-only___ojeRa Button-module__root--size-large___kP7cl Button-module__root--variant-tertiary-neutral___G8p0m Calendar-module__control___I7JT6 Calendar-module__control--prev___Mi8Du']";
+        String right_arrow ="//button[@class='Actionable-module__root___VRKD+ Button-module__root___Q6nj1 Button-module__root--variant-tertiary___jSdz0 Button-module__root--icon-only___ojeRa Button-module__root--size-large___kP7cl Button-module__root--variant-tertiary-neutral___G8p0m Calendar-module__control___I7JT6 Calendar-module__control--next___jXzpD']";
         try {
         // Select Depart date
-        selectDate(driver, depart, larrow, rarrow);
+        selectDate(driver, depart, left_arrow, right_arrow);
         // Select Return date
-        selectDate(driver, returns, larrow, rarrow);
+        selectDate(driver, returns, left_arrow, right_arrow);
         }catch(Exception e) {
         	driver.findElement(By.xpath("//div[text()='Round trip']")).click();
         }

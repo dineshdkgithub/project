@@ -1,4 +1,4 @@
-package Booking.com;
+package Pageobject;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -50,9 +50,8 @@ public class CMN {
 		protected static final String excel = "Search";
 		@DataProvider(name = excel)
 	    public static  Object[][]getdata(Method m)  throws IOException {
-	    	//System.out.println(" method name : " + m.getName());
 	    	String testcaseSheetName = ((Test) m.getAnnotation(Test.class)).testName();
-	        String filePath = "C:\\Data\\Testdata.xlsx";
+	        String filePath = properties.getProperty("file_path");
 	        FileInputStream fis = new FileInputStream(new File(filePath));
 	        XSSFWorkbook workbook = new XSSFWorkbook(fis);
 	        int totalSheets = workbook.getNumberOfSheets();
@@ -65,10 +64,7 @@ public class CMN {
 		        }
 		        int rows = sheet.getPhysicalNumberOfRows();
 		        int cols = sheet.getRow(0).getLastCellNum();
-		        //System.out.println("rows =  " + rows + " cols = " +cols);
 		        DataFormatter formatter = new DataFormatter();
-		        //System.out.println("Sheet Name: " + sheet.getSheetName());
-		        //System.out.println("Sheet: " + sheetIndex);
 		        data = new Object[cols-1][1];
 		        Map<Integer, Map<String, Object>> initMap = new HashMap<>();
 		        for(int i = 1; i < cols;i++) {
@@ -83,7 +79,6 @@ public class CMN {
 		            	Map<String, Object> colMap = initMap.get(j);
 		            	String colName = formatter.formatCellValue(sheet.getRow(i).getCell(0));
 		            	colMap.put(colName, formatter.formatCellValue(sheet.getRow(i).getCell(j)));
-		                //System.out.println(colName + " >> " + colMap.get(colName));
 		            }
 		            colIndex++;
 		        }
@@ -112,6 +107,8 @@ public class CMN {
 				driver = new ChromeDriver();
 			}else if(Browser.equalsIgnoreCase("firefox")) {
 				driver = new FirefoxDriver();
+			}else if(Browser.equalsIgnoreCase("edge")) {
+				driver = new EdgeDriver();
 			}
 			driver.manage().window().maximize();
 			driver.get(url);
@@ -157,7 +154,7 @@ public class CMN {
 	        // To call reporter
 	        extent.attachReporter(reporter);
 	        // Set system info
-	        extent.setSystemInfo("Host Name", "Localhost");
+	        extent.setSystemInfo("Host Name", "Local Host");
 	        extent.setSystemInfo("Environment", "QA");
 	        extent.setSystemInfo("User Name", "Test User");
 	    }
@@ -221,7 +218,7 @@ public class CMN {
 	        boolean leftArrowClicked = false;
 
 	        while (true) {
-	            List<WebElement> Month = driver.findElements(By.xpath("//span[@data-date='" + newDateString + "']"));
+	            List<WebElement> Month = driver.findElements(By.xpath(Search.newdate(newDateString)));
 	            if (!Month.isEmpty()) {
 	                Month.get(0).click();
 	                break;
